@@ -335,6 +335,7 @@ MonoBehaviour:
   VirticalSpeed: 0
   TargetVirticalSpeed: 0
   SmoothTime: 0.6
+  ForwardSpeed: -1
   MaxHeight: 4
   MinHeight: -3
 --- !u!1 &1506964900
