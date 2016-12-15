@@ -41,4 +41,12 @@ public class PlayerMovement : MonoBehaviour {
 
         VirticalSpeed = Mathf.SmoothDamp(VirticalSpeed, TargetVirticalSpeed, ref _tempVelocity, SmoothTime);
 	}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Obstacle"))
+        {
+            Debug.Log("Collide with house");
+        }
+    }
 }
