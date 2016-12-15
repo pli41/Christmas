@@ -9,6 +9,7 @@ public class PlayerMovement : MonoBehaviour {
     public float VirticalSpeed;
     public float TargetVirticalSpeed;
     public float SmoothTime;
+    public float ForwardSpeed;
 
     public float MaxHeight;
     public float MinHeight;
@@ -31,8 +32,12 @@ public class PlayerMovement : MonoBehaviour {
     float _tempVelocity;
 	void Update () {
         var y = transform.position.y;
+        var x = transform.position.x;
+
         y = Mathf.Clamp(y + VirticalSpeed * Time.deltaTime, MinHeight, MaxHeight);
-        transform.position = new Vector3(transform.position.x, y, transform.position.z);
+        x = x + ForwardSpeed * Time.deltaTime;
+
+        transform.position = new Vector3(x, y, transform.position.z);
 
         VirticalSpeed = Mathf.SmoothDamp(VirticalSpeed, TargetVirticalSpeed, ref _tempVelocity, SmoothTime);
 	}
