@@ -10,7 +10,8 @@ public class PlayerMovement : MonoBehaviour {
     public float TargetVirticalSpeed;
     public float SmoothTime;
     public float ForwardSpeed;
-    public float FlashTime;
+    public float FlashFrequency;
+    public float InvincibleTime;
     public float Health;
 
     public float MaxHeight;
@@ -59,7 +60,7 @@ public class PlayerMovement : MonoBehaviour {
     {
         if (collision.CompareTag("Obstacle"))
         {
-            StartCoroutine(Invincible(FlashTime));
+            StartCoroutine(Invincible(InvincibleTime));
             Debug.Log("Collide with house");
         }
     }
@@ -69,14 +70,16 @@ public class PlayerMovement : MonoBehaviour {
     IEnumerator Invincible(float duration)
     {
         bCollider.enabled = false;
-        for (int i = 0; i < 5; i++)
+
+        var startTime = Time.time;
+        while (Time.time - startTime < InvincibleTime)
         {
-            sRenderer.enabled = false;
-            yield return new WaitForSeconds(duration);
-            sRenderer.enabled = true;
-            yield return new WaitForSeconds(duration);
+            sRenderer.enabled = !sRenderer.enabled;
+            yield return new WaitForSeconds(FlashFrequency);
         }
+
+        sRenderer.enabled = true;
+
         bCollider.enabled = true;
-        //}
     }
 }
