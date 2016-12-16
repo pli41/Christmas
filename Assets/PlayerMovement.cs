@@ -10,9 +10,14 @@ public class PlayerMovement : MonoBehaviour {
     public float TargetVirticalSpeed;
     public float SmoothTime;
     public float ForwardSpeed;
+    public float FlashTime;
+    public float Health;
 
     public float MaxHeight;
     public float MinHeight;
+
+    private BoxCollider2D bCollider;
+    private SpriteRenderer sRenderer;
 
     public void OnTouchStart()
     {
@@ -27,9 +32,14 @@ public class PlayerMovement : MonoBehaviour {
     void Start()
     {
         OnTouchEnd();
+
+        bCollider = GetComponent<BoxCollider2D>();
+        sRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
     float _tempVelocity;
+
+
 	void Update () {
         var y = transform.position.y;
         var x = transform.position.x;
@@ -42,11 +52,31 @@ public class PlayerMovement : MonoBehaviour {
         VirticalSpeed = Mathf.SmoothDamp(VirticalSpeed, TargetVirticalSpeed, ref _tempVelocity, SmoothTime);
 	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
+
+
+
+    void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Obstacle"))
         {
+            StartCoroutine(Invincible(FlashTime));
             Debug.Log("Collide with house");
         }
+    }
+
+
+
+    IEnumerator Invincible(float duration)
+    {
+        bCollider.enabled = false;
+        for (int i = 0; i < 5; i++)
+        {
+            sRenderer.enabled = false;
+            yield return new WaitForSeconds(duration);
+            sRenderer.enabled = true;
+            yield return new WaitForSeconds(duration);
+        }
+        bCollider.enabled = true;
+        //}
     }
 }
